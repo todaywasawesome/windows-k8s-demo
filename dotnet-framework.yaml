@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-framework-1903
+  labels:
+    app: dotnet-framework-1903
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: dotnet-framework-1903
+      labels:
+        app: dotnet-framework-1903
+    spec:
+      containers:
+      - name: dotnet-framework-1903
+        image: mcr.microsoft.com/dotnet/framework/samples:aspnetapp-windowsservercore-1903
+        ports:
+          - containerPort: 80
+      nodeSelector:
+        "kubernetes.io/os": windows
+  selector:
+    matchLabels:
+      app: dotnet-framework-1903
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-framework-1903
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+  selector:
+    app: dotnet-framework-1903
